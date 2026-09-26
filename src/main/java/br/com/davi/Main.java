@@ -4,25 +4,26 @@ import br.com.davi.model.Funcionario;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import br.com.davi.services.FuncionarioService;
 
 import java.io.InputStream;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
 
 public class Main {
-    public static void main(String[] args) {
-        List<Funcionario> funcionarios = carregarFuncionariosDoJson();
+    private static List<Funcionario> funcionarios = carregarFuncionariosDoJson();
+    private static FuncionarioService funcionarioService = new FuncionarioService();
 
-        DateTimeFormatter formatadorData = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        funcionarios.forEach(f -> {
-            System.out.println(String.format("Nome: %s | Data Nasc: %s | Salário: %,.2f | Função: %s",
-                    f.getNome(),
-                    f.getDataNascimento().format(formatadorData),
-                    f.getSalario(),
-                    f.getFuncao()
-            ));
-        });
+    public static void main(String[] args) {
+        listarFuncionarios(funcionarios);
+
+        System.out.println("---------Removendo João-----------");
+        funcionarioService.remover("João", funcionarios);
+        listarFuncionarios(funcionarios);
     }
 
     private static List<Funcionario> carregarFuncionariosDoJson() {
@@ -41,4 +42,22 @@ public class Main {
             return new ArrayList<>();
         }
     }
+
+    private static void listarFuncionarios(List<Funcionario> funcionarios) {
+        DateTimeFormatter formatadorData = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        DecimalFormatSymbols simbolos = new DecimalFormatSymbols(new Locale("pt", "BR"));
+        DecimalFormat formatadorSalario = new DecimalFormat("#,##0.00", simbolos);
+
+        funcionarios.forEach(f -> {
+            System.out.println(String.format(
+                    "Nome: %s | Data Nasc: %s | Salário: R$ %s | Função: %s",
+                    f.getNome(),
+                    f.getDataNascimento().format(formatadorData),
+                    formatadorSalario.format(f.getSalario()),
+                    f.getFuncao()
+            ));
+        });
+    }
+
 }
