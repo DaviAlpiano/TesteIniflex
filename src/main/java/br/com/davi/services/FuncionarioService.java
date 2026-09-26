@@ -3,8 +3,7 @@ package br.com.davi.services;
 import br.com.davi.model.Funcionario;
 
 import java.math.BigDecimal;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class FuncionarioService {
@@ -23,6 +22,16 @@ public class FuncionarioService {
 
     public Map<String, List<Funcionario>> agruparFuncao(List<Funcionario> funcionarios) {
         return funcionarios.stream().collect(Collectors.groupingBy(Funcionario::getFuncao));
+    }
+
+    public List<Funcionario> getAniversariantes(List<Funcionario> funcionarios, int... meses) {
+        Set<Integer> mesesDesejados = Arrays.stream(meses)
+                .boxed()
+                .collect(Collectors.toSet());
+
+        return funcionarios.stream()
+                .filter(funcionario -> mesesDesejados.contains(funcionario.getDataNascimento().getMonthValue()))
+                .toList();
     }
 
 }

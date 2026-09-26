@@ -40,6 +40,12 @@ public class Main {
 
         Map<String, List<Funcionario>> funcionariosPorFuncao = funcionarioService.agruparFuncao(funcionarios);
         imprimirFuncionariosPorFuncao(funcionariosPorFuncao);
+
+        System.out.println("---------Aniversário-----------");
+
+        List<Funcionario> aniversariantes10e12 = funcionarioService.getAniversariantes(funcionarios, 10, 12);
+        listarFuncionarios(aniversariantes10e12);
+
     }
 
     private static List<Funcionario> carregarFuncionariosDoJson() {
