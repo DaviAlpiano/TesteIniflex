@@ -18,12 +18,12 @@ import java.util.Locale;
 import java.util.Map;
 
 public class Main {
-    private static List<Funcionario> funcionarios = carregarFuncionariosDoJson();
-    private static FuncionarioService funcionarioService = new FuncionarioService();
+    private static final List<Funcionario> funcionarios = carregarFuncionariosDoJson();
+    private static final FuncionarioService funcionarioService = new FuncionarioService();
     private static final DateTimeFormatter FORMATADOR_DATA = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private static final DecimalFormat FORMATADOR_SALARIO = new DecimalFormat(
             "#,##0.00",
-            new DecimalFormatSymbols(new Locale("pt", "BR"))
+            new DecimalFormatSymbols(Locale.of("pt", "BR"))
     );
 
     public static void main(String[] args) {
@@ -63,37 +63,34 @@ public class Main {
                 System.err.println("Arquivo mock.json não encontrado na pasta resources.");
                 return new ArrayList<>();
             }
-            return mapper.readValue(is, new TypeReference<List<Funcionario>>() {});
+            return mapper.readValue(is, new TypeReference<>() {});
         } catch (Exception e) {
             System.err.println("Erro ao processar o JSON: " + e.getMessage());
-            e.printStackTrace();
             return new ArrayList<>();
         }
     }
 
     private static void listarFuncionarios(List<Funcionario> funcionarios) {
-        funcionarios.forEach(f -> {
-            System.out.println(String.format(
-                    "Nome: %s | Data Nasc: %s | Salário: R$ %s | Função: %s",
-                    f.getNome(),
-                    f.getDataNascimento().format(FORMATADOR_DATA),
-                    FORMATADOR_SALARIO.format(f.getSalario()),
-                    f.getFuncao()
-            ));
-        });
+        funcionarios.forEach(f -> System.out.printf(String.format(
+                "Nome: %s | Data Nasc: %s | Salário: R$ %s | Função: %s%n",
+                f.getNome(),
+                f.getDataNascimento().format(FORMATADOR_DATA),
+                FORMATADOR_SALARIO.format(f.getSalario()),
+                f.getFuncao()
+        )));
     }
 
     public static void imprimirFuncionariosPorFuncao(Map<String, List<Funcionario>> funcionariosPorFuncao) {
         funcionariosPorFuncao.forEach((funcao, lista) -> {
             System.out.println("\n=== Função: " + funcao + " (" + lista.size() + ") ===");
-            lista.forEach(f -> {
-                System.out.println(String.format(
-                        "  - %s | Nasc: %s | Salário: R$ %s",
+            lista.forEach(f ->
+                System.out.printf(String.format(
+                        "  - %s | Nasc: %s | Salário: R$ %s%n",
                         f.getNome(),
                         f.getDataNascimento().format(FORMATADOR_DATA),
                         FORMATADOR_SALARIO.format(f.getSalario())
-                ));
-            });
+                ))
+            );
         });
     }
 
@@ -102,8 +99,8 @@ public class Main {
         LocalDate hoje = LocalDate.now();
         int idade = Period.between(dataNascimento, hoje).getYears();
 
-        System.out.println(String.format(
-                "Nome: %s, Idade: %s anos",
+        System.out.printf(String.format(
+                "Nome: %s, Idade: %s anos%n",
                 funcionario.getNome(),
                 idade
         ));
