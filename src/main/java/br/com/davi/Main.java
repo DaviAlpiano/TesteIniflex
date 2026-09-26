@@ -7,6 +7,8 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import br.com.davi.services.FuncionarioService;
 
 import java.io.InputStream;
+import java.time.LocalDate;
+import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +48,10 @@ public class Main {
         List<Funcionario> aniversariantes10e12 = funcionarioService.getAniversariantes(funcionarios, 10, 12);
         listarFuncionarios(aniversariantes10e12);
 
+        System.out.println("---------Mais Velho-----------");
+
+        Funcionario maisVelho = funcionarioService.getMaisVelho(funcionarios);
+        funcionarioMaisVelho(maisVelho);
     }
 
     private static List<Funcionario> carregarFuncionariosDoJson() {
@@ -89,6 +95,18 @@ public class Main {
                 ));
             });
         });
+    }
+
+    public static void funcionarioMaisVelho(Funcionario funcionario) {
+        LocalDate dataNascimento = funcionario.getDataNascimento();
+        LocalDate hoje = LocalDate.now();
+        int idade = Period.between(dataNascimento, hoje).getYears();
+
+        System.out.println(String.format(
+                "Nome: %s, Idade: %s anos",
+                funcionario.getNome(),
+                idade
+        ));
     }
 
 }

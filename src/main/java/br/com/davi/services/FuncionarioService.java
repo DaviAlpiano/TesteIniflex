@@ -34,4 +34,11 @@ public class FuncionarioService {
                 .toList();
     }
 
+    public Funcionario getMaisVelho(List<Funcionario> funcionarios) {
+        Optional<Funcionario> maisVelho = funcionarios.stream()
+                .min(Comparator.comparing(Funcionario::getDataNascimento));
+
+        return maisVelho.orElse(null);
+    }
+
 }
