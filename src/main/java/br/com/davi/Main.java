@@ -13,10 +13,16 @@ import java.util.List;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
+import java.util.Map;
 
 public class Main {
     private static List<Funcionario> funcionarios = carregarFuncionariosDoJson();
     private static FuncionarioService funcionarioService = new FuncionarioService();
+    private static final DateTimeFormatter FORMATADOR_DATA = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private static final DecimalFormat FORMATADOR_SALARIO = new DecimalFormat(
+            "#,##0.00",
+            new DecimalFormatSymbols(new Locale("pt", "BR"))
+    );
 
     public static void main(String[] args) {
         listarFuncionarios(funcionarios);
@@ -29,6 +35,11 @@ public class Main {
 
         funcionarioService.aumentoSalarialEmPorcentagem(funcionarios);
         listarFuncionarios(funcionarios);
+
+        System.out.println("---------Agrupar por Função-----------");
+
+        Map<String, List<Funcionario>> funcionariosPorFuncao = funcionarioService.agruparFuncao(funcionarios);
+        imprimirFuncionariosPorFuncao(funcionariosPorFuncao);
     }
 
     private static List<Funcionario> carregarFuncionariosDoJson() {
@@ -49,19 +60,28 @@ public class Main {
     }
 
     private static void listarFuncionarios(List<Funcionario> funcionarios) {
-        DateTimeFormatter formatadorData = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
-        DecimalFormatSymbols simbolos = new DecimalFormatSymbols(new Locale("pt", "BR"));
-        DecimalFormat formatadorSalario = new DecimalFormat("#,##0.00", simbolos);
-
         funcionarios.forEach(f -> {
             System.out.println(String.format(
                     "Nome: %s | Data Nasc: %s | Salário: R$ %s | Função: %s",
                     f.getNome(),
-                    f.getDataNascimento().format(formatadorData),
-                    formatadorSalario.format(f.getSalario()),
+                    f.getDataNascimento().format(FORMATADOR_DATA),
+                    FORMATADOR_SALARIO.format(f.getSalario()),
                     f.getFuncao()
             ));
+        });
+    }
+
+    public static void imprimirFuncionariosPorFuncao(Map<String, List<Funcionario>> funcionariosPorFuncao) {
+        funcionariosPorFuncao.forEach((funcao, lista) -> {
+            System.out.println("\n=== Função: " + funcao + " (" + lista.size() + ") ===");
+            lista.forEach(f -> {
+                System.out.println(String.format(
+                        "  - %s | Nasc: %s | Salário: R$ %s",
+                        f.getNome(),
+                        f.getDataNascimento().format(FORMATADOR_DATA),
+                        FORMATADOR_SALARIO.format(f.getSalario())
+                ));
+            });
         });
     }
 

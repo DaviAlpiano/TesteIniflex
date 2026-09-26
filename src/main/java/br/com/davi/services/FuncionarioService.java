@@ -4,6 +4,8 @@ import br.com.davi.model.Funcionario;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class FuncionarioService {
 
@@ -17,6 +19,10 @@ public class FuncionarioService {
                 funcionario.setSalario(
                         funcionario.getSalario().multiply(bonus))
         );
+    }
+
+    public Map<String, List<Funcionario>> agruparFuncao(List<Funcionario> funcionarios) {
+        return funcionarios.stream().collect(Collectors.groupingBy(Funcionario::getFuncao));
     }
 
 }
