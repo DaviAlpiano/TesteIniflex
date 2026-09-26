@@ -24,6 +24,11 @@ public class Main {
         System.out.println("---------Removendo João-----------");
         funcionarioService.remover("João", funcionarios);
         listarFuncionarios(funcionarios);
+
+        System.out.println("---------Aumento Salarial-----------");
+
+        funcionarioService.aumentoSalarialEmPorcentagem(funcionarios);
+        listarFuncionarios(funcionarios);
     }
 
     private static List<Funcionario> carregarFuncionariosDoJson() {
