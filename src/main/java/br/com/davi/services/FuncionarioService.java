@@ -41,4 +41,9 @@ public class FuncionarioService {
         return maisVelho.orElse(null);
     }
 
+    public List<Funcionario> getFuncionariosOrdemAlfabetica(List<Funcionario> funcionarios) {
+        return funcionarios.stream()
+                .sorted(Comparator.comparing(Funcionario::getNome)).toList();
+    }
+
 }

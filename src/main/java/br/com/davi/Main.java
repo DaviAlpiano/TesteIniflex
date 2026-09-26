@@ -52,6 +52,11 @@ public class Main {
 
         Funcionario maisVelho = funcionarioService.getMaisVelho(funcionarios);
         funcionarioMaisVelho(maisVelho);
+
+        System.out.println("---------Ordem Alfabética-----------");
+        List<Funcionario> ordem = funcionarioService.getFuncionariosOrdemAlfabetica(funcionarios);
+        listarFuncionarios(ordem);
+
     }
 
     private static List<Funcionario> carregarFuncionariosDoJson() {
