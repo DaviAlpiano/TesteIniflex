@@ -3,6 +3,7 @@ package br.com.davi.services;
 import br.com.davi.model.Funcionario;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -50,6 +51,13 @@ public class FuncionarioService {
         return funcionarios.stream()
                 .map(Funcionario::getSalario)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    public void getTotalSalarioMinimo(List<Funcionario> funcionarios) {
+        BigDecimal divisor = BigDecimal.valueOf(1212.00);
+        funcionarios.forEach(funcionario ->
+                System.out.println(funcionario.getNome() + " ganha " +
+                        funcionario.getSalario().divide(divisor, 2, RoundingMode.HALF_UP) + " de salários mínimos"));
     }
 
 }

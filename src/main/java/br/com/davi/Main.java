@@ -60,6 +60,9 @@ public class Main {
         System.out.println("---------Total dos salários-----------");
         System.out.println("Salário total: R$" + funcionarioService.getTotalSalarios(funcionarios));
 
+        System.out.println("---------Total de salários mínimos-----------");
+        funcionarioService.getTotalSalarioMinimo(funcionarios);
+
     }
 
     private static List<Funcionario> carregarFuncionariosDoJson() {
