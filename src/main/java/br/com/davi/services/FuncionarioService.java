@@ -46,4 +46,10 @@ public class FuncionarioService {
                 .sorted(Comparator.comparing(Funcionario::getNome)).toList();
     }
 
+    public BigDecimal getTotalSalarios(List<Funcionario> funcionarios) {
+        return funcionarios.stream()
+                .map(Funcionario::getSalario)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
 }

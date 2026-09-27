@@ -57,6 +57,9 @@ public class Main {
         List<Funcionario> ordem = funcionarioService.getFuncionariosOrdemAlfabetica(funcionarios);
         listarFuncionarios(ordem);
 
+        System.out.println("---------Total dos salários-----------");
+        System.out.println("Salário total: R$" + funcionarioService.getTotalSalarios(funcionarios));
+
     }
 
     private static List<Funcionario> carregarFuncionariosDoJson() {
